@@ -2,6 +2,12 @@ package com.laioffer.tinnews.profile;
 
 import android.view.View;
 
+
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 public class ProfilePresenter implements ProfileContract.Presenter {
 
 
@@ -15,13 +21,15 @@ public class ProfilePresenter implements ProfileContract.Presenter {
 
     @Override
     public void onCreate() {
-
+        EventBus.getDefault().register(this);
     }
+
 
     @Override
     public void onDestroy() {
-
+        EventBus.getDefault().unregister(this);
     }
+
 
     @Override
     public void onViewAttached(ProfileContract.View view) {
@@ -55,6 +63,11 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         return view -> {
             model.setDefaultCountry(country);
         };
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CountryEvent countryEvent) {
+        if (this.view != null) {
+        }
     }
 
 }

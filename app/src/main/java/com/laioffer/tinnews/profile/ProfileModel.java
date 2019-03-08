@@ -2,8 +2,11 @@ package com.laioffer.tinnews.profile;
 
 import android.annotation.SuppressLint;
 
+
 import com.laioffer.tinnews.TinApplication;
 import com.laioffer.tinnews.database.AppDatabase;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -31,9 +34,11 @@ public class ProfileModel implements ProfileContract.Model {
         });
     }
 
-
     @Override
     public void setDefaultCountry(String country) {
-
+        //7.1
+        EventBus.getDefault().post(new CountryEvent(country));
     }
+
+
 }
