@@ -12,6 +12,10 @@
 * __new API__
 * __RESTFUL API__
 
+
+## Project Structure
+![](https://github.com/Liang200/News-Android-Application/blob/master/Structure.png)
+
 ## Quick Start
 
 ` Download Android Studio `
