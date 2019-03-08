@@ -5,20 +5,12 @@
 * Implemented swipe gestures for liking/disliking the news with Mindorks’s PlaceHolderView.
 * Utilized Retrofit and Rxjava to pull the latest news data (category, editor, etc.) from a RESTFUL endpoint  (newsapi.org).
 
-
-
-
 ## Build with
 * __MVP model__
 * __EvenBus__
 * __Android studio__
 * __new API__
 * __RESTFUL API__
-
-## Demo 
-
-
-
 
 ## Quick Start
 
@@ -27,3 +19,6 @@
 ` Start virtual mobile / Connect with your own Android smart phone`
 
 ` click run button`
+
+## Demo 
+![](https://j.gifs.com/p8QKQy.gif)
