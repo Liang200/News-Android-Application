@@ -12,10 +12,15 @@ import io.reactivex.Flowable;
 
 @Dao
 public interface NewsDao {
+
     @Insert
     void insertNews(News news);
 
     //3.1
     @Query("SELECT * FROM news")
     Flowable<List<News>> getAll();
+
+    //4.4
+    @Query("DELETE FROM news")
+    void deleteAllNews();
 }

@@ -1,8 +1,10 @@
 package com.laioffer.tinnews.save;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,12 @@ import android.widget.TextView;
 
 import com.laioffer.tinnews.R;
 import com.laioffer.tinnews.common.TinBasicFragment;
+import com.laioffer.tinnews.common.ViewModelAdapter;
 import com.laioffer.tinnews.mvp.MvpFragment;
 import com.laioffer.tinnews.retrofit.response.News;
 import com.laioffer.tinnews.save.detail.SavedNewsDetailedFragment;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -21,18 +25,14 @@ import java.util.List;
  */
 public class SavedNewsFragment extends MvpFragment<SavedNewsContract.Presenter> implements SavedNewsContract.View {
 
-    //4.3
-    private TextView author;
-    private TextView description;
+    private ViewModelAdapter savedNewsAdapter;
+    private TextView emptyState;
 
     public static SavedNewsFragment newInstance() {
+        Bundle args = new Bundle();
         SavedNewsFragment fragment = new SavedNewsFragment();
+        fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -40,36 +40,33 @@ public class SavedNewsFragment extends MvpFragment<SavedNewsContract.Presenter> 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_saved_news, container, false);
-
-        //4.3
-        author = view.findViewById(R.id.author);
-        description = view.findViewById(R.id.description);
-        description.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tinFragmentManager.doFragmentTransaction(SavedNewsDetailedFragment.newInstance());
-            }
-        });
-
-
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        emptyState = view.findViewById(R.id.empty_state);
+        savedNewsAdapter = new ViewModelAdapter();
+        recyclerView.setAdapter(savedNewsAdapter);
         return view;
+
     }
 
-    //1.8
     @Override
     public SavedNewsContract.Presenter getPresenter() {
         return new SavedNewsPresenter();
     }
 
-    //3.6
+    @Override
     public void loadSavedNews(List<News> newsList) {
-        //4.4
-        if (newsList.size() > 0) {
-            News news = newsList.get(newsList.size() - 1);
-            author.setText(news.getAuthor());
-            description.setText(news.getDescription());
+        if (newsList.size() == 0) {
+            emptyState.setVisibility(View.VISIBLE);
+        } else {
+            emptyState.setVisibility(View.GONE);
+        }
+        if (newsList != null) {
+            List<SavedNewsViewModel> models = new LinkedList<>();
+            for (News news : newsList) {
+                models.add(new SavedNewsViewModel(news, tinFragmentManager));
+            }
+            savedNewsAdapter.addViewModels(models);
         }
     }
-
 }
-

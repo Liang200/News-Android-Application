@@ -63,8 +63,7 @@ public class WebViewActivity extends TinBasicActivity implements PopupMenu.OnMen
                 webView.loadUrl(url);
             }
         }
-        url = "https://www.google.com";
-        webView.loadUrl(url);
+
 
         findViewById(R.id.more).setOnClickListener(new View.OnClickListener() {
             @Override
